@@ -1,28 +1,47 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<main class="fluid-container bg-dark">
+<div class="container text-light">
+  <h1 class="text-center pt-5">Astronomy Picture Of the Day</h1>
+  <h3 class="text-center pb-5" v-text="date"></h3>
+  <img :src="imgOfTheDay" alt="Image of the day" class="rounded img-fluid mx-auto d-block">
+  <p class="text-justify pt-5 mx-4" v-text="explanation"></p>
+</div>
+
+<footer class="text-light text-center p-5">
+  <p>
+    Powered by 
+    <a class="text-light" href="https://daviiduhh.com">daviiduhh.com</a>
+  </p>
+</footer>
+</main>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      date: null,
+      explanation: null,
+      imgOfTheDay: null
+    }
+  },
+  async mounted() {
+    const res = await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY');
+    const data = await res.json();
+
+    this.date = data.date;
+    this.explanation = data.explanation;
+    this.imgOfTheDay = data.hdurl;
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  a {
+    text-decoration: none;
+    font-weight: 600;
+  }
 </style>
